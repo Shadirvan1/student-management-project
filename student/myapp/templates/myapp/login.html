@@ -1,0 +1,12 @@
+<form method='POST'>
+
+{% csrf_token %}
+
+<input name='email' type='email' placeholder='enter your email' /><br><br>
+<input name='password'  type='password' placeholder='enter your password' />
+<br><br>
+
+<button type='submit'>login</button>
+{{error}}
+</form>
+<h2>you dont have account <a href='{% url 'register' %}'>sign up</a></h2>
