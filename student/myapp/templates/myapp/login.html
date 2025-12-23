@@ -10,3 +10,12 @@
 {{error}}
 </form>
 <h2>you dont have account <a href='{% url 'register' %}'>sign up</a></h2>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+

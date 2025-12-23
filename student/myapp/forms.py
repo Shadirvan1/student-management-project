@@ -3,7 +3,7 @@ from .models import reg_model
 class reg_form(forms.ModelForm):
     class Meta:
         model = reg_model
-        fields = ['u_username','u_email','u_password','u_confirm']
+        fields = ['u_username','u_email','u_password','u_confirm','profile_pic']
         widgets = {
             'u_username' : forms.TextInput(attrs={
                 'class':'input_field',
@@ -45,7 +45,4 @@ class reg_form(forms.ModelForm):
         username = self.cleaned_data.get('u_username')
         if username and not username.isalpha():
             self.add_error('u_username',"username only contains letters")
-            
-        if reg_model.objects.filter(u_email = username).exists():
-            self.add_error('u_username',"username already exist")
         return username

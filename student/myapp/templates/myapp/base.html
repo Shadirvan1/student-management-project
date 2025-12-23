@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+{% block extra_css %}{% endblock %}
+
+  {% block title %}
+  <title>Student Management</title>
+  {% endblock %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+
+<body>
+
+
+  <nav class="navbar">
+   
+    <div class="logo">
+        <img class='image' src="{{request.session.user_pic}}"  />
+
+        {{ request.session.user_name}}
+
+    </div>
+
+    <ul>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'user_course' %}">courses</a></li>
+      <li><a href="{% url 'user_profile' %}">Profile</a></li>
+      <li><a href="{% url 'login' %}">Login</a></li>
+    </ul>
+  </nav>
+
+  
+  <body>
+
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Student Management System | Built with Django</p>
+  </footer>
+
+</body>
+
+</body>
+</html>

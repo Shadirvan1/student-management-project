@@ -4,3 +4,4 @@ from .models import reg_model
 
 
 admin.site.register(reg_model)
+

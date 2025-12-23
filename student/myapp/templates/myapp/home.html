@@ -1,0 +1,88 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}
+<title>Home | Student Management</title>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section style="
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url('/static/myapp/images/student-bg.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+">
+    <div>
+        <h1 style="font-size: 42px; margin-bottom: 15px;">
+            Student Management System
+        </h1>
+        <p style="font-size: 18px; margin-bottom: 25px;">
+            Manage students, courses, enrollment & payments easily
+        </p>
+
+        <a href="{% url 'user_course' %}" style="
+            padding: 12px 25px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        ">
+            COURSES
+        </a>
+
+        <a href="{% url 'user_profile' %}" style="
+            padding: 12px 25px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        ">
+            PROFILE
+        </a>
+    </div>
+</section>
+
+<section style="padding: 60px 20px; background: #f8f9fa;">
+    <h2 style="text-align: center; margin-bottom: 40px;">
+        Why Choose Our Platform?
+    </h2>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        max-width: 1000px;
+        margin: auto;
+    ">
+        <div style="background: white; padding: 20px; border-radius: 8px;">
+            <h4>Student Management</h4>
+            <p>Manage student profiles, courses, and enrollment efficiently.</p>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 8px;">
+            <h4>Course Enrollment</h4>
+            <p>Students can easily enroll and track their courses.</p>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 8px;">
+            <h4>Secure Payments</h4>
+            <p>Simple and safe payment process for course registration.</p>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 8px;">
+            <h4>Email Notifications</h4>
+            <p>Automatic email confirmation for enrollments.</p>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}

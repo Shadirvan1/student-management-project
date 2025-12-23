@@ -1,0 +1,35 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/courses.css' %}">
+
+{% endblock %}
+{% block title %}
+<title>Course Page</title>
+{% endblock %}
+
+{% block content %}
+<div class="course-container">
+    {% for n in courses %}
+    <div class="course-card">
+        <h3 class="course-title">{{ n.course_name }}</h3>
+        <p class="course-desc">{{ n.course_desc }}</p>
+        <div class="course-footer">
+            <span class="course-price">₹ {{ n.course_price }}</span>
+          
+                <button class="enroll-btn"><a href="{% url 'enroll_course' n.id %}">Enroll</a></button>
+            
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% endblock %}
