@@ -1,10 +1,107 @@
 {% extends "myapp/admin/base.html" %}
+{% load static %}
 
-{% block title %}
-admin page
-{% endblock  %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/admin_home.css' %}">
+{% endblock %}
 
 {% block content %}
 
-admin
-{% endblock  %}
+<h2 class="dashboard-title">Admin Dashboard</h2>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Students</h3>
+        <p>{{ students }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Teachers</h3>
+        <p>{{ teachers }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Admins</h3>
+        <p>{{ admins }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Courses</h3>
+        <p>{{ course_count }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Active Courses</h3>
+        <p>{{ active_course }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Inactive Courses</h3>
+        <p>{{ inactive_course }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Inactive Users</h3>
+        <p>{{ inactive_users }}</p>
+    </div>
+</div>
+
+<div class="charts-grid">
+    <div class="chart-box">
+        <h4>User Distribution</h4>
+        <canvas id="userPieChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h4>Course Status</h4>
+        <canvas id="coursePieChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    new Chart(document.getElementById('userPieChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Students', 'Teachers', 'Admins'],
+            datasets: [{
+                data: [{{ students }}, {{ teachers }}, {{ admins }}],
+                backgroundColor: ['#0d6efd', '#198754', '#dc3545']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('coursePieChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Active Courses', 'Inactive Courses'],
+            datasets: [{
+                data: [{{ active_course }}, {{ inactive_course }}],
+                backgroundColor: ['#198754', '#ffc107']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

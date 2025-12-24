@@ -1,35 +1,52 @@
 {% extends "myapp/base.html" %}
 {% load static %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'myapp/css/courses.css' %}">
-
 {% endblock %}
+
 {% block title %}
-<title>Course Page</title>
+<title>Courses</title>
 {% endblock %}
 
 {% block content %}
-<div class="course-container">
-    {% for n in courses %}
-    <div class="course-card">
-        <h3 class="course-title">{{ n.course_name }}</h3>
-        <p class="course-desc">{{ n.course_desc }}</p>
-        <div class="course-footer">
-            <span class="course-price">₹ {{ n.course_price }}</span>
-          
-                <button class="enroll-btn"><a href="{% url 'enroll_course' n.id %}">Enroll</a></button>
-            
+
+<div class="courses-page">
+
+    <h2 class="page-heading">Available Courses</h2>
+
+    <div class="course-container">
+        {% for n in courses %}
+        <div class="course-card">
+
+            <div class="course-body">
+                <h3 class="course-title">{{ n.course_name }}</h3>
+                <p class="course-desc">{{ n.course_desc }}</p>
+            </div>
+
+            <div class="course-footer">
+                <span class="course-price">₹ {{ n.course_price }}</span>
+                <a href="{% url 'enroll_course' n.id %}" class="enroll-btn">
+                    Enroll
+                </a>
+            </div>
+
         </div>
+        {% empty %}
+        <p class="no-course">No courses available.</p>
+        {% endfor %}
     </div>
-    {% endfor %}
+
 </div>
 
 {% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-    </div>
-  {% endfor %}
+<div class="message-wrapper">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
 {% endif %}
 
 {% endblock %}

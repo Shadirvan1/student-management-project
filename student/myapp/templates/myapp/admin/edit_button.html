@@ -1,0 +1,10 @@
+{% extends "myapp/admin/base.html" %}
+{% block extra_css %}{% endblock  %}
+{% block page_title %}edit page{% endblock  %}
+{% block content %}
+{{user.id}}
+{{user.u_username}}
+{{user.u_email}}
+{{user.role}}
+{{user.u_course}}
+{% endblock  %}

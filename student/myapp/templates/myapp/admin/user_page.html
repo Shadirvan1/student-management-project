@@ -1,0 +1,79 @@
+{% extends "myapp/admin/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/user_page.css' %}">
+{% endblock %}
+{% block title %}Single User{% endblock %}
+{% block page_title %}User Details{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="user-profile-card">
+
+    
+    <div class="user-avatar">
+        <img src="{{ user.profile_pic.url }}" alt="Profile Image">
+    </div>
+    
+   
+    <div class="user-info">
+        <div class="info-row">
+            <span class="label">User ID:</span>
+            <span class="value">{{ user.id }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Username:</span>
+            <span class="value">{{ user.u_username }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Email:</span>
+            <span class="value">{{ user.u_email }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Role:</span>
+            <span class="value">{{ user.role }}</span>
+        </div>
+        <div class="info-row">
+            <span class="label">Activity:</span>
+            <span class="value">{{ user.is_active }}</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="label">Course:</span>
+            <span class="value">{{ user.u_course }}<button><a href="{% url 'course_admin' user.id%}">delete</a></button></span>
+        </div>
+    </div>
+    
+    <form method="POST">
+{% csrf_token %}
+
+<div class="user-actions">
+    <label for="role">Select Role:</label>
+    <select name="role" id="role" required  >
+        <option value="none" >-- Select Role --</option>
+        <option value="student" >Student</option>
+        <option value="teacher" >Teacher</option>
+        <option value="admin">Admin</option>
+    </select>
+    <button  class="btn edit-btn" type="submit" >Set role</button>
+    
+</form>
+
+        {% if user.is_active == True %}
+            <button class="btn block-btn"  ><a href="{% url 'block_user' user.id %}">Block</a></button>
+            {% else %}
+            <button class="btn active-btn">Activate</button>
+            {% endif %}
+        </div>
+        
+</div>
+
+
+{% endblock %}

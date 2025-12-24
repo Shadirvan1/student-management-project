@@ -1,0 +1,20 @@
+{% extends "myapp/admin/base.html" %}
+{% load static %}
+{% block extra_css %}{% endblock  %}
+
+{% block title %}
+Adimn edit page
+{% endblock  %}
+{% block page_title %}admin profile edit{% endblock  %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type='text' name='username' value={{user.u_username}} required/>
+    <input type='file' name='profile_pic' required/>
+
+<button type='submit'>Edit</button>
+<button><a href="{% url 'admin_profile' %}">Cancel</a></button>
+
+</form>
+{{error}}
+{% endblock  %}

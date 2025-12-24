@@ -1,15 +1,37 @@
-<form method='POST'>
+{% load static %}
+<link rel="stylesheet" href="{% static 'myapp/css/login.css' %}">
 
-{% csrf_token %}
+<form method="POST" class="login-form">
+    {% csrf_token %}
 
-<input name='email' type='email' placeholder='enter your email' /><br><br>
-<input name='password'  type='password' placeholder='enter your password' />
-<br><br>
+    <h2 class="form-title">Login</h2>
 
-<button type='submit'>login</button>
-{{error}}
+    <div class="form-group">
+        <input name="email" type="email" placeholder="Enter your email" required>
+    </div>
+
+    <div class="form-group">
+        <input name="password" type="password" placeholder="Enter your password" required>
+    </div>
+
+    {% if error %}
+        <div class="error-text">{{ error }}</div>
+    {% endif %}
+
+    <button type="submit" class="btn-submit">Login</button>
+
+    <div class="form-links">
+        <p>
+            Don’t have an account?
+            <a href="{% url 'register' %}">Sign up</a>
+        </p>
+
+        <p>
+            Resend verification?
+            <a href="{% url 'resend_link' %}">Resend link</a>
+        </p>
+    </div>
 </form>
-<h2>you dont have account <a href='{% url 'register' %}'>sign up</a></h2>
 
 {% if messages %}
   {% for message in messages %}
@@ -18,4 +40,3 @@
     </div>
   {% endfor %}
 {% endif %}
-

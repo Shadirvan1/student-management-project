@@ -1,0 +1,76 @@
+{% extends "myapp/admin/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/admin_courses.css' %}">
+{% endblock %}
+
+{% block title %}All Courses{% endblock %}
+{% block page_title %}All Courses{% endblock %}
+{% block content %}
+
+{% if messages %}
+  <div class="alert-wrapper">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %} 
+
+<div class="page-header">
+    <div class="add-course-wrapper">
+        <a class="add-course-btn" href="{% url 'add_new_course'%}">
+            + Add Course
+        </a>
+    </div>
+</div>
+
+<div class="courses-wrapper">
+    {% for n in courses %}
+    <div class="course-card">
+
+        <div class="course-header">
+            <h3 class="course-title">{{ n.course_name }}</h3>
+        </div>
+
+        <div class="course-desc">
+            {{ n.course_desc|truncatechars:80 }}
+        </div>
+
+        <div class="course-footer">
+            <span class="course-price">₹ {{ n.course_price }}</span>
+
+            {% if n.is_active %}
+                <span class="status active">Active</span>
+            {% else %}
+                <span class="status inactive">Blocked</span>
+            {% endif %}
+        </div>
+
+        <div class="course-actions">
+            <a class="btn edit-btn" href="{% url 'course_edit' n.id %}">Edit</a>
+
+            {% if n.is_active %}
+                <a href="{% url 'block_unblock' n.id %}" class="btn block-btn">
+                    Block
+                </a>
+            {% else %}
+                <a href="{% url 'block_unblock' n.id %}" class="btn unblock-btn">
+                    Activate
+                </a>
+            {% endif %}
+
+            <a href="{% url 'delete_course' n.id %}" class="btn delete-btn">
+                Delete
+            </a>
+        </div>
+
+    </div>
+    {% empty %}
+        <p class="empty-text">No courses available.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

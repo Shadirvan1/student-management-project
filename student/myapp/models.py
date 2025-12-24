@@ -6,6 +6,8 @@ class course_model(models.Model):
     course_name = models.CharField(max_length=30)
     course_desc = models.TextField()
     course_price = models.IntegerField()
+    is_active = models.BooleanField(default=True)
+
     def __str__ (self):
         return self.course_name
 
@@ -35,6 +37,7 @@ class reg_model(models.Model):
     u_course = models.ForeignKey(course_model,
         on_delete=models.SET_NULL,blank=True,null = True)
     activation_token = models.CharField(max_length=100, blank=True, null=True)
-    
+    is_active = models.BooleanField(default=True)
+    pre_role = models.CharField(default=None,blank=True,null=True)
 
 

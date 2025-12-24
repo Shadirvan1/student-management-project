@@ -1,0 +1,188 @@
+{% extends "myapp/admin/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/add_role.css' %}">
+{% endblock %}
+
+{% block title %}User Roles{% endblock %}
+{% block page_title %}Full users{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+  {% endfor %}
+{% endif %} 
+
+
+
+
+<h2>Students</h2>
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Course</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in students %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.u_username }}</td>
+            <td>{{ user.u_email }}</td>
+            <td><span class="badge student">Student</span></td>
+            <td>
+                {% if user.is_active %}
+                    <span class="badge active">Active</span>
+                {% else %}
+                    <span class="badge inactive">Inactive</span>
+                {% endif %}
+            </td>
+            <td>{{ user.u_course.course_name|default:"Not Enrolled" }}</td>
+            <td>
+                <button class="table-action-btn">
+                    <a href="{% url 'edit_page' user.id %}">See</a>
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align:center;">No students</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Teachers</h2>
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in teachers %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.u_username }}</td>
+            <td>{{ user.u_email }}</td>
+            <td><span class="badge teacher">Teacher</span></td>
+            <td>
+                {% if user.is_active %}
+                    <span class="badge active">Active</span>
+                {% else %}
+                    <span class="badge inactive">Inactive</span>
+                {% endif %}
+            </td>
+            <td>
+                <button class="table-action-btn">
+                    <a href="{% url 'edit_page' user.id %}">See</a>
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align:center;">No teachers</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Admins</h2>
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in admins %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.u_username }}</td>
+            <td>{{ user.u_email }}</td>
+            <td><span class="badge admin">Admin</span></td>
+            <td>
+                {% if user.is_active %}
+                    <span class="badge active">Active</span>
+                {% else %}
+                    <span class="badge inactive">Inactive</span>
+                {% endif %}
+            </td>
+            <td>
+                <button class="table-action-btn">
+                    <a href="{% url 'edit_page' user.id %}">See</a>
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align:center;">No admins</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Users Without Role & inactive users</h2>
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Course</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in no_roles %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.u_username }}</td>
+            <td>{{ user.u_email }}</td>
+            <td><span class="badge none">No Role</span></td>
+            <td>
+                {% if user.is_active %}
+                    <span class="badge active">Active</span>
+                {% else %}
+                    <span class="badge inactive">Inactive</span>
+                {% endif %}
+            </td>
+            <td>{{ user.u_course.course_name|default:"Not Enrolled" }}</td>
+            <td>
+                <button class="table-action-btn">
+                    <a href="{% url 'edit_page' user.id %}">See</a>
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align:center;">No users</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

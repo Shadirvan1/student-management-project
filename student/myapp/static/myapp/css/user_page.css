@@ -1,0 +1,101 @@
+/* =========================
+   USER PROFILE CARD
+========================= */
+.user-profile-card {
+    max-width: 600px;
+    background-color: #ffffff;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   PROFILE IMAGE
+========================= */
+.user-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.user-avatar img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e5e7eb;
+}
+
+/* =========================
+   USER INFO
+========================= */
+.user-info {
+    margin-top: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.value {
+    color: #111827;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.user-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Edit */
+.edit-btn {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.edit-btn:hover {
+    background-color: #1e40af;
+}
+
+/* Block */
+.block-btn {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.block-btn:hover {
+    background-color: #b91c1c;
+}
+
+/* Activate */
+.active-btn {
+    background-color: #10b981;
+    color: #ffffff;
+}
+
+.active-btn:hover {
+    background-color: #059669;
+}

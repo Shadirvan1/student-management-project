@@ -1,58 +1,111 @@
+
+.courses-page {
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.page-heading {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+}
+
 .course-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    gap: 25px;
+    max-width: 1200px;
+    margin: auto;
 }
 
 .course-card {
     background: #ffffff;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .course-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.course-body {
+    margin-bottom: 15px;
 }
 
 .course-title {
     font-size: 20px;
     font-weight: 600;
-    color: #333;
+    color: #222;
     margin-bottom: 10px;
 }
 
 .course-desc {
     font-size: 14px;
-    color: #666;
-    margin-bottom: 15px;
+    color: #555;
+    line-height: 1.6;
 }
 
 .course-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: auto;
 }
 
 .course-price {
     font-size: 18px;
-    font-weight: bold;
-    color: #2e7d32;
+    font-weight: 700;
+    color: #0d6efd;
 }
 
 .enroll-btn {
-    background: #1976d2;
+    background-color: #198754;
     color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
     font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
 }
 
 .enroll-btn:hover {
-    background: #125aa3;
+    background-color: #146c43;
+}
+
+.message-wrapper {
+    max-width: 1200px;
+    margin: 30px auto 0;
+}
+
+.alert {
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.no-course {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
 }

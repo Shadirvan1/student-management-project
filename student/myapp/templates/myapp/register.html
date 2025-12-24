@@ -1,16 +1,44 @@
-<form method = 'POST' enctype="multipart/form-data">
-{% csrf_token %}
-<div>
-    {{ form.u_username }}<br>
-    {{ form.u_email }}<br>
-    {{ form.u_password }}<br>
-    {{ form.u_confirm }}<br>
-    {{ form.profile_pic}}<br>
-</div>
-{{form.u_confirm.errors }}
-{{form.u_email.errors }}
-{{form.u_username.errors }}
-<button type='submit'>Register</button>
-</form>
-<h2>if you have already a account <a href='{% url 'login' %}'>login</a></h2>
+{% load static %}
+<link rel="stylesheet" href="{% static 'myapp/css/register.css' %}">
+<form method="POST" enctype="multipart/form-data" class="register-form">
+    {% csrf_token %}
 
+    <h2 class="form-title">Create Account</h2>
+
+    <div class="form-group">
+        {{ form.u_username }}
+        {{ form.u_username.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.u_email }}
+        {{ form.u_email.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.u_password }}
+    </div>
+
+    <div class="form-group">
+        {{ form.u_confirm }}
+        {{ form.u_confirm.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.profile_pic }}
+    </div>
+
+    <button type="submit" class="btn-submit">Register</button>
+
+    <div class="form-links">
+        <p>
+            Resend verification?
+            <a href="{% url 'resend_link' %}">Resend link</a>
+        </p>
+
+        <p>
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+</form>

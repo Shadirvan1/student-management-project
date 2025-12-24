@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('',views.login_page,name='login'),
     path('register/',views.register_page,name='register'),
+    path('resend_link/',views.resend_link,name='resend_link'),
     path('activate/<str:token>/', views.activate_account, name='activate'),
     path('home/',views.home,name='home'),
     path('profile/',views.user_profile,name = 'user_profile'),
@@ -14,6 +15,17 @@ urlpatterns = [
     path('enroll_course/<int:id>',views.enroll_course,name = 'enroll_course'),
     path('teacher/',views.teacher_home,name='teacher_home'),
     path('admin_home/',views.admin_home,name='admin_home'),
-    path('add_roles/',views.add_roles,name='add_roles'),
-
+    path('users_admin/',views.add_roles,name='users_admin'),
+    path('edit_page/<int:id>',views.edit_block,name='edit_page'),
+    path('admin_profile',views.admin_profile,name='admin_profile'),
+    path('admin_edit',views.admin_edit,name='admin_edit'),
+    path('edit_button/<int:id>',views.edit_button,name='edit_button'),
+    path('course_admin/<int:id>',views.course_admin,name='course_admin'),
+    path('block_user/<int:id>',views.block_button,name='block_user'),
+    path('admin_courses',views.admin_courses,name='admin_courses'),
+    path('course_edit/<int:id>',views.course_edit,name='course_edit'),
+    path('block_unblock/<int:id>',views.block_unblock,name='block_unblock'),
+    path('delete_course/<int:id>',views.delete_course,name='delete_course'),
+    path('add_new_course',views.add_new_course,name='add_new_course'),
+    path('admin_logout',views.admin_logout,name='admin_logout'),
 ]

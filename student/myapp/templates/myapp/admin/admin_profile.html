@@ -1,0 +1,41 @@
+{% extends "myapp/admin/base.html" %}
+{% load static %}
+
+{% block title %}Admin Profile{% endblock %}
+{% block page_title %}Admin Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/admin_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-profile-card">
+
+    
+    <div class="admin-avatar">
+        <img src="{{ admin.profile_pic.url }}" alt="Admin Profile">
+    </div>
+
+
+    <div class="admin-info">
+        <div class="info-row">
+            <span class="label">Admin ID:</span>
+            <span class="value">{{ admin.id }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Username:</span>
+            <span class="value">{{ admin.u_username }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Email:</span>
+            <span class="value">{{ admin.u_email }}</span>
+        </div>
+        <button><a href="{% url 'admin_edit' %}">edit</a></button>
+    </div>
+
+</div>
+
+{% endblock %}
