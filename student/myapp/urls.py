@@ -24,8 +24,9 @@ urlpatterns = [
     path('block_user/<int:id>',views.block_button,name='block_user'),
     path('admin_courses',views.admin_courses,name='admin_courses'),
     path('course_edit/<int:id>',views.course_edit,name='course_edit'),
-    path('block_unblock/<int:id>',views.block_unblock,name='block_unblock'),
     path('delete_course/<int:id>',views.delete_course,name='delete_course'),
+    path('block_unblock/<int:id>',views.block_unblock,name='block_unblock'),
+    path('active_user/<int:id>',views.active_user,name='active_user'),
     path('add_new_course',views.add_new_course,name='add_new_course'),
     path('admin_logout',views.admin_logout,name='admin_logout'),
 ]

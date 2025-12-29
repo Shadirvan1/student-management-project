@@ -69,7 +69,7 @@
         {% if user.is_active == True %}
             <button class="btn block-btn"  ><a href="{% url 'block_user' user.id %}">Block</a></button>
             {% else %}
-            <button class="btn active-btn">Activate</button>
+            <button class="btn active-btn"><a href="{% url 'active_user' user.id %}">Active</a></button>
             {% endif %}
         </div>
         

@@ -10,179 +10,182 @@
 
 {% block content %}
 
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
+<div class="roles-page">
+
+    {% if messages %}
+    <div class="alert-wrapper">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
     </div>
-  {% endfor %}
-{% endif %} 
+    {% endif %}
 
+    <div class="role-section">
+        <h2 class="section-title">Students</h2>
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in students %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.u_username }}</td>
+                        <td>{{ user.u_email }}</td>
+                        <td><span class="badge student">Student</span></td>
+                        <td>
+                            {% if user.is_active %}
+                            <span class="badge active">Active</span>
+                            {% else %}
+                            <span class="badge inactive">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.u_course.course_name|default:"Not Enrolled" }}</td>
+                        <td>
+                            <a href="{% url 'edit_page' user.id %}" class="action-btn">See</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="empty-row">No students</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
+    <div class="role-section">
+        <h2 class="section-title">Teachers</h2>
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in teachers %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.u_username }}</td>
+                        <td>{{ user.u_email }}</td>
+                        <td><span class="badge teacher">Teacher</span></td>
+                        <td>
+                            {% if user.is_active %}
+                            <span class="badge active">Active</span>
+                            {% else %}
+                            <span class="badge inactive">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'edit_page' user.id %}" class="action-btn">See</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="empty-row">No teachers</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
+    <div class="role-section">
+        <h2 class="section-title">Admins</h2>
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in admins %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.u_username }}</td>
+                        <td>{{ user.u_email }}</td>
+                        <td><span class="badge admin">Admin</span></td>
+                        <td>
+                            {% if user.is_active %}
+                            <span class="badge active">Active</span>
+                            {% else %}
+                            <span class="badge inactive">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'edit_page' user.id %}" class="action-btn">See</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="empty-row">No admins</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<h2>Students</h2>
-<table class="admin-table">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Course</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in students %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.u_username }}</td>
-            <td>{{ user.u_email }}</td>
-            <td><span class="badge student">Student</span></td>
-            <td>
-                {% if user.is_active %}
-                    <span class="badge active">Active</span>
-                {% else %}
-                    <span class="badge inactive">Inactive</span>
-                {% endif %}
-            </td>
-            <td>{{ user.u_course.course_name|default:"Not Enrolled" }}</td>
-            <td>
-                <button class="table-action-btn">
-                    <a href="{% url 'edit_page' user.id %}">See</a>
-                </button>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="7" style="text-align:center;">No students</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="role-section">
+        <h2 class="section-title">Users Without Role</h2>
+        <div class="table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in no_roles %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.u_username }}</td>
+                        <td>{{ user.u_email }}</td>
+                        <td><span class="badge none">No Role</span></td>
+                        <td>
+                            {% if user.is_active %}
+                            <span class="badge active">Active</span>
+                            {% else %}
+                            <span class="badge inactive">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.u_course.course_name|default:"Not Enrolled" }}</td>
+                        <td>
+                            <a href="{% url 'edit_page' user.id %}" class="action-btn">See</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="empty-row">No users</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<h2>Teachers</h2>
-<table class="admin-table">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in teachers %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.u_username }}</td>
-            <td>{{ user.u_email }}</td>
-            <td><span class="badge teacher">Teacher</span></td>
-            <td>
-                {% if user.is_active %}
-                    <span class="badge active">Active</span>
-                {% else %}
-                    <span class="badge inactive">Inactive</span>
-                {% endif %}
-            </td>
-            <td>
-                <button class="table-action-btn">
-                    <a href="{% url 'edit_page' user.id %}">See</a>
-                </button>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6" style="text-align:center;">No teachers</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<h2>Admins</h2>
-<table class="admin-table">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in admins %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.u_username }}</td>
-            <td>{{ user.u_email }}</td>
-            <td><span class="badge admin">Admin</span></td>
-            <td>
-                {% if user.is_active %}
-                    <span class="badge active">Active</span>
-                {% else %}
-                    <span class="badge inactive">Inactive</span>
-                {% endif %}
-            </td>
-            <td>
-                <button class="table-action-btn">
-                    <a href="{% url 'edit_page' user.id %}">See</a>
-                </button>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6" style="text-align:center;">No admins</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<h2>Users Without Role & inactive users</h2>
-<table class="admin-table">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Course</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in no_roles %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.u_username }}</td>
-            <td>{{ user.u_email }}</td>
-            <td><span class="badge none">No Role</span></td>
-            <td>
-                {% if user.is_active %}
-                    <span class="badge active">Active</span>
-                {% else %}
-                    <span class="badge inactive">Inactive</span>
-                {% endif %}
-            </td>
-            <td>{{ user.u_course.course_name|default:"Not Enrolled" }}</td>
-            <td>
-                <button class="table-action-btn">
-                    <a href="{% url 'edit_page' user.id %}">See</a>
-                </button>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="7" style="text-align:center;">No users</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+</div>
 
 {% endblock %}

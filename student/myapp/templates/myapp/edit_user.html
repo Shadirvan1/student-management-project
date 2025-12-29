@@ -1,15 +1,52 @@
 {% extends "myapp/base.html" %}
 
 {% block title %}
-<title>edit page</title>
-{% endblock  %}
-{% block content %}
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type='text' name='username' value={{user.u_username}} />
-    <input type='file' name='profile_pic' />
-<button type='submit'>edit</button>
+<title>Edit Profile</title>
+{% endblock %}
 
-</form>
-{{error}}
-{% endblock  %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/edit_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="edit-page">
+    <div class="edit-card">
+        <h2 class="edit-title">Edit Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="edit-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" value="{{ user.u_username }}">
+            </div>
+
+            <div class="form-group">
+                <label>Old Password</label>
+                <input type="password" name="old_password" placeholder="Enter old password">
+            </div>
+
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" name="new_password" placeholder="Enter new password">
+            </div>
+
+            <div class="form-group">
+                <label>Profile Picture</label>
+                <input type="file" name="profile_pic">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Save Changes</button>
+                <a href="{% url 'user_profile' %}" class="btn-cancel">Cancel</a>
+            </div>
+
+            {% if error %}
+            <p class="form-error">{{ error }}</p>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock %}

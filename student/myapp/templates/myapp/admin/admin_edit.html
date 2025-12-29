@@ -1,20 +1,52 @@
 {% extends "myapp/admin/base.html" %}
 {% load static %}
-{% block extra_css %}{% endblock  %}
 
-{% block title %}
-Adimn edit page
-{% endblock  %}
-{% block page_title %}admin profile edit{% endblock  %}
+{% block title %}Profile edit{% endblock %}
+{% block page_title %}Edit page{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/admin_edit.css' %}">
+{% endblock %}
+
 {% block content %}
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type='text' name='username' value={{user.u_username}} required/>
-    <input type='file' name='profile_pic' required/>
 
-<button type='submit'>Edit</button>
-<button><a href="{% url 'admin_profile' %}">Cancel</a></button>
+<div class="edit-page">
+    <div class="edit-card">
+        <h2 class="edit-title">Edit Profile</h2>
 
-</form>
-{{error}}
-{% endblock  %}
+        <form method="POST" enctype="multipart/form-data" class="edit-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" value="{{ user.u_username }}">
+            </div>
+
+            <div class="form-group">
+                <label>Old Password</label>
+                <input type="password" name="old_password" placeholder="Enter old password">
+            </div>
+
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" name="new_password" placeholder="Enter new password">
+            </div>
+
+            <div class="form-group">
+                <label>Profile Picture</label>
+                <input type="file" name="profile_pic">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Save Changes</button>
+                <a href="{% url 'admin_profile' %}" class="btn-cancel">Cancel</a>
+            </div>
+
+            {% if error %}
+            <p class="form-error">{{ error }}</p>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -17,15 +17,3 @@ def role_requeried(allowed_roles=[]):
     return decorator
           
 
-def check_reg(view_func):
-    def wrapper(request,*args,**kwargs):
-        role = request.session.get('user_role')
-        if request.session.get('user_id'):
-            if role == "student":
-                return redirect("home")
-            elif role == "admin":
-                return redirect("admin_home")
-            else:
-                return redirect("register")
-        return view_func(request,*args,**kwargs)
-    return wrapper

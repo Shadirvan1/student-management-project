@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from .forms import reg_form
 from .models import reg_model,course_model
 from django.db.models import Q
-from .decorators import role_requeried,check_reg
+from .decorators import role_requeried
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -15,6 +15,7 @@ from django.urls import reverse
 from django.conf import settings
 import uuid
 from django.contrib import messages
+from django.db.models import Sum
 
 token_generator = PasswordResetTokenGenerator()
 
@@ -95,7 +96,6 @@ def resend_link(request):
 
 
 
-@check_reg
 def login_page(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -136,7 +136,6 @@ def login_page(request):
 
     return render(request, 'myapp/login.html')
 
-
 @role_requeried(allowed_roles=['student','teacher','admin'])
 def home(request):
     user_id = request.session.get('user_id')
@@ -161,19 +160,63 @@ def user_profile(request):
     return render(request,'myapp/user_profile.html',{'user':user})
 
 @role_requeried(allowed_roles=['student','teacher','admin'])
+
+
 def edit_user(request):
     user_id = request.session.get('user_id')
-    user = reg_model.objects.get(id = user_id)
+
+    if not user_id:
+        return redirect('login')
+
+    user = reg_model.objects.get(id=user_id)
+
     if request.method == 'POST':
-        username = request.POST.get("username")
-        if username.isalpha():
-            user.u_username = username
-            user.profile_pic = request.FILES['profile_pic']
-            user.save()
-            return redirect ('user_profile')
-        else:
-            return render(request,'myappp/edit_user.html',{'user':user , 'error':'user name must have alphabet '})
-    return render(request,'myapp/edit_user.html',{'user':user})
+        username = request.POST.get("username", "").strip()
+        old_password = request.POST.get("old_password", "").strip()
+        new_password = request.POST.get("new_password", "").strip()
+        pic = request.FILES.get('profile_pic')
+        
+
+        
+        if not username.isalpha():
+            return render(request, 'myapp/edit_user.html', {
+                'user': user,
+                'error': 'Username must contain only letters'
+            })
+
+        
+        user.u_username = username
+
+        
+        if pic:
+            user.profile_pic = pic
+
+        if old_password and new_password:
+            hashed_password = hashlib.sha256(
+            old_password.encode('utf-8')
+            ).hexdigest()
+
+            if hashed_password != user.u_password:
+                return render(request, 'myapp/edit_user.html', {
+                    'user': user,
+                    'error': 'Old password is incorrect'
+                })
+
+            if old_password == new_password:
+                return render(request, 'myapp/edit_user.html', {
+                    'user': user,
+                    'error': 'New password must be different'
+                })
+            new_pass = hashlib.sha256(
+            new_password.encode('utf-8')
+            ).hexdigest()
+
+            user.u_password = new_pass
+
+        user.save()
+        return redirect('user_profile')
+
+    return render(request, 'myapp/edit_user.html', {'user': user})
 
 @role_requeried(allowed_roles=['student','teacher','admin'])
 def user_course(request):
@@ -196,11 +239,13 @@ def enroll_course(request,id):
             message = f"Hi {user.u_username},\n\nYou have successfully enrolled in {course.course_name}.\n\nThank you!"
             recipient_list = [user.u_email]
             send_mail(subject, message, None, recipient_list, fail_silently=False)
+            messages.success(request,"sucessfully enrolled a course")
+            return redirect("user_course")
+
         else:
             messages.warning(request,"you have already enrolled a course ")
             return redirect('user_course')
-        messages.success(request,"sucessfully enrolled a course")
-        return redirect("user_course")
+        
 
     return render(request,'myapp/payment.html',{'course':course,'user':user})
      
@@ -247,6 +292,12 @@ def admin_home(request):
     teachers = reg_model.objects.filter(role='teacher').count()
     admins = reg_model.objects.filter(role='admin').count()
     total_users  = reg_model.objects.all().count()
+    total_profit = reg_model.objects.filter(
+    u_course__isnull=False
+    ).aggregate(
+    total=Sum('u_course__course_price')
+            )['total'] or 0
+    
 
     context = {
         'students': students,
@@ -256,7 +307,7 @@ def admin_home(request):
         "active_false":active_false,
         "course_count":course_count,
         "active_course":active_course,
-        "inactive_course":inactive_course,
+        "total_profit":total_profit,
          "total_users":total_users,
          "inactive_users":inactive_users
 
@@ -294,6 +345,9 @@ def edit_block(request,id):
         
     return render(request,"myapp/admin/user_page.html",{'user':user})
 
+
+
+
 @role_requeried(allowed_roles=['admin'])
 def admin_profile(request):
     admin_id=request.session.get("user_id")
@@ -303,18 +357,59 @@ def admin_profile(request):
 @role_requeried(allowed_roles=['admin'])
 def admin_edit(request):
     user_id = request.session.get('user_id')
-    user = reg_model.objects.get(id = user_id)
-    if request.method == 'POST':
-        username = request.POST.get("username")
-        if username.isalpha():
-            user.u_username = username
-            user.profile_pic = request.FILES['profile_pic']
-            user.save()
-            return redirect ('admin_profile')
-        else:
-            return render(request,'myapp/admin/admin_edit.html',{'user':user , 'error':'user name must have alphabet '})
-    return render(request,'myapp/admin/admin_edit.html',{'user':user})
 
+    if not user_id:
+        return redirect('login')
+
+    user = reg_model.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        username = request.POST.get("username", "").strip()
+        old_password = request.POST.get("old_password", "").strip()
+        new_password = request.POST.get("new_password", "").strip()
+        pic = request.FILES.get('profile_pic')
+        
+
+        
+        if not username.isalpha():
+            return render(request, 'myapp/edit_user.html', {
+                'user': user,
+                'error': 'Username must contain only letters'
+            })
+
+        
+        user.u_username = username
+
+        
+        if pic:
+            user.profile_pic = pic
+
+        if old_password and new_password:
+            hashed_password = hashlib.sha256(
+            old_password.encode('utf-8')
+            ).hexdigest()
+
+            if hashed_password != user.u_password:
+                return render(request, 'myapp/admin/admin_edit.html', {
+                    'user': user,
+                    'error': 'Old password is incorrect'
+                })
+
+            if old_password == new_password:
+                return render(request, 'myapp/admin/admin_edit.html', {
+                    'user': user,
+                    'error': 'New password must be different'
+                })
+            new_pass = hashlib.sha256(
+            new_password.encode('utf-8')
+            ).hexdigest()
+
+            user.u_password = new_pass
+
+        user.save()
+        return redirect('admin_profile')
+
+    return render(request, 'myapp/admin/admin_edit.html', {'user': user})
 @role_requeried(allowed_roles=['admin'])
 def course_admin(request,id):
     user = get_object_or_404(reg_model,id=id)
@@ -338,22 +433,22 @@ def edit_button(request,id):
 
 @role_requeried(allowed_roles=['admin'])
 def block_button(request,id):
-    user = reg_model.objects.get(id= id)
+    user = get_object_or_404(reg_model, id=id)
+    user.is_active = not user.is_active
+    user.save()
+    messages.success(request,f"successfully blocked {user.u_username}")
+    return redirect("users_admin")
 
-    if user.is_active == True:
-        user.is_active = False
-        user.pre_role = user.role
-        user.role=None
-        user.save()
-        messages.success(request,f"successfully blocked {user.u_username}")
-        return redirect('users_admin')
-    else:
-        user.is_active = True
-        user.role = user.pre_role
-        user.pre_role = None
-        user.save()
-        messages.success(request,f"successfully unblocked {user.u_username}")
-        return redirect('users_admin')
+  
+
+@role_requeried(allowed_roles=['admin'])
+def active_user(request, id):
+    user = get_object_or_404(reg_model, id=id)
+    user.is_active = not user.is_active
+    user.save()
+    messages.success(request,f"successfully unblocked {user.u_username}")
+    return redirect("users_admin")
+
 
 @role_requeried(allowed_roles=['admin'])
 def admin_courses(request):
